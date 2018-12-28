@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gsb.sundry.dao.SharesDao">
+
+
+        <select id="getFundBysharesCode" parameterType="java.lang.String" resultType="com.gsb.sundry.pojo.FundDO">
+                SELECT * FROM fund WHERE id IN(SELECT DISTINCT fundId FROM shares WHERE shares.sharesCode=#{sharesCode}) ORDER BY fund.id ASC
+        </select>
+
+        <select id="getTime" resultType="java.lang.String">
+                SELECT DISTINCT recordtime FROM sharesreport ORDER BY recordtime ASC
+        </select>
+
+        <select id="getFundBysharesCodeTotal" parameterType="java.lang.String" resultType="java.lang.Integer">
+                SELECT count(*) FROM fund WHERE id IN(SELECT DISTINCT fundId FROM shares WHERE shares.sharesCode=#{sharesCode})
+        </select>
+
+        <select id="getlist" parameterType="com.gsb.sundry.pojo.SharesVO" resultType="com.gsb.sundry.pojo.SharesDO">
+                SELECT * FROM shares
+                <where>
+                        <if test="sharesName !=null and sharesName != ''">AND sharesName like CONCAT(CONCAT('%', #{sharesName}),'%')</if>
+                        <if test="sharesCode !=null and sharesCode != ''">AND sharesCode = #{sharesCode} </if>
+                </where>
+                limit #{pageBean.page}, #{pageBean.limit}
+        </select>
+
+        <select id="getTotalCount" parameterType="com.gsb.sundry.pojo.SharesVO" resultType="java.lang.Integer">
+                SELECT count(*) from shares
+                <where>
+                        <if test="sharesName != null and sharesName != ''">AND sharesName like CONCAT(CONCAT('%', #{sharesName}),'%')</if>
+                        <if test="sharesCode != null and sharesCode != ''">AND sharesCode = #{sharesCode} </if>
+                </where>
+        </select>
+
+        <select id="getsharesAnalysisList" parameterType="com.gsb.sundry.pojo.SharesVO" resultType="com.gsb.sundry.pojo.SharesAnalysisVO">
+
+                SELECT * FROM (
+                SELECT count(*) as buyNum,sharesName,sharesCode , sum(ratio)/count(*) as totalRatio FROM shares
+                LEFT JOIN fund ON shares.fundId=fund.id
+                <where>
+                        <if test="sharesName != null and sharesName != ''">AND sharesName like CONCAT(CONCAT('%', #{sharesName}),'%')</if>
+                        <if test="sharesCode != null and sharesCode != ''">AND sharesCode = #{sharesCode} </if>
+                </where>
+                GROUP BY shares.sharesName ,sharesCode
+                ORDER BY buyNum desc
+                )
+                as temp  limit #{pageBean.page}, #{pageBean.limit};
+
+        </select>
+
+        <select id="getsharesAnalysisTotal" parameterType="com.gsb.sundry.pojo.SharesVO" resultType="java.lang.Integer">
+                SELECT count(*) from (
+                SELECT count(*) as buyNum,sharesName ,sharesCode, sum(ratio) as totalRatio FROM shares
+                LEFT JOIN fund ON shares.fundId=fund.id
+                <where>
+                        <if test="sharesName != null and sharesName != ''">AND sharesName like CONCAT(CONCAT('%', #{sharesName}),'%')</if>
+                        <if test="sharesCode != null and sharesCode != ''">AND sharesCode = #{sharesCode} </if>
+                </where>
+                GROUP BY shares.sharesName,sharesCode
+                ) as temp;
+        </select>
+</mapper>
