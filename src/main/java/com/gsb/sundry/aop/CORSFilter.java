@@ -33,7 +33,6 @@ public class CORSFilter implements Filter {
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
-
     @Override
     public void destroy() {
 
