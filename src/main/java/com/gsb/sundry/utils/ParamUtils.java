@@ -91,7 +91,7 @@ public class ParamUtils {
     public static void exe(String cmd){
         Runtime run = Runtime.getRuntime();//返回与当前 Java 应用程序相关的运行时对象
         try {
-          /*  Process p = run.exec(cmd.split(" "));// 启动另一个进程来执行命令
+           /* Process p = run.exec(cmd.split(" "));// 启动另一个进程来执行命令
             BufferedInputStream in = new BufferedInputStream(p.getInputStream());
             BufferedReader inBr = new BufferedReader(new InputStreamReader(in));
             String lineStr;
@@ -137,7 +137,8 @@ public class ParamUtils {
 
 
     public static void main(String[] args) throws ParseException {
-        String cmd ="cmd /c D: && cd D:\\devTest\\spider_douban && scrapy crawl douban250 -o resultinfo.csv -t csv";
+//        String cmd ="cmd /c D: && cd D:\\devTest\\spider_douban && scrapy crawl douban250 -o resultinfo.csv -t csv";
+        String cmd ="ping www.baidu.com";
         exe(cmd);
 
 

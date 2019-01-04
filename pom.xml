@@ -108,7 +108,7 @@
 					<jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -116,7 +116,7 @@
 					<target>1.8</target>
 					<encoding>utf-8</encoding>
 				</configuration>
-			</plugin>
+			</plugin>-->
 		</plugins>
 	</build>
 
